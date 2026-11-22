@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Turners in Paris</title>
+<meta name="description" content="The Turners' stroller-friendly Paris plan, 26–28 Nov 2026.">
+<meta name="theme-color" content="#1d2b4c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Turners">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta property="og:title" content="Turners in Paris">
+<meta property="og:description" content="Our stroller-friendly Paris plan, 26–28 Nov 2026.">
+<meta property="og:image" content="icons/icon-512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,400;0,600;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a calm, practical field guide for parents on the move
+   IDEA: a surveyor's walking map folded into a pocket timetable
+   PICTURE: a drawn Paris map you can pan and pinch: Seine, streets, parks, landmarks, route along the streets
+   COLOUR and TYPE: survey-map sea, land, contour brown, route magenta; Overpass 800 + Overpass
+   LAYOUT: map on top (sticky beside the list on wide screens), big hanging times below */
+:root{color-scheme:light dark;
+--land:light-dark(#fbfbf2,#0d1c24);--sea:light-dark(#bfe3ee,#1f4655);--seaedge:light-dark(#9fcfdf,#2b5a6b);--ink:light-dark(#13242e,#e4edef);
+--brown:light-dark(#a8551b,#d9955f);--route:light-dark(#d6127e,#ff5fae);--park:light-dark(#dcebc6,#163024);
+--panel:light-dark(#ffffff,#122a34);--muted:light-dark(#566870,#97aab1);--line:light-dark(#e2e2d3,#28434e);--road:light-dark(#ebe5d5,#1f3843);--roadedge:light-dark(#ddd5c0,#2a4652);--blue:light-dark(#1f5f86,#7fc0e6);--parktext:light-dark(#5d7a3e,#8fbf73)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--land);color:var(--ink);font:16px/1.55 Overpass,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-weight:800;line-height:1.1;margin:0;text-wrap:balance}
+a{color:inherit}
+.top{padding:calc(18px + env(safe-area-inset-top)) max(4vw,16px,env(safe-area-inset-right)) 0 max(4vw,16px,env(safe-area-inset-left));max-width:1240px;margin:auto}
+.brand{display:flex;align-items:center;gap:14px}.brand img{width:clamp(52px,12vw,68px);height:auto;border-radius:22%;box-shadow:0 2px 8px rgba(0,0,0,.18);flex:none}
+.install{display:none;margin:12px 0 0;padding:10px 12px;border-radius:12px;background:var(--panel);border:1.5px solid var(--line);font-size:14px;align-items:center;gap:10px}.install.on{display:flex}.install button{margin-left:auto;white-space:nowrap;flex:none;min-height:36px;padding:0 12px;border-radius:8px;border:1.5px solid var(--line);background:var(--land);color:var(--ink);font:600 14px Overpass,sans-serif;cursor:pointer}
+.top h1{font-size:clamp(30px,6vw,46px);letter-spacing:-.01em}
+.top p{margin:6px 0 0;color:var(--muted);font-size:15px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:14px 0 12px;scrollbar-width:none}
+.tabs button{flex:none;min-height:48px;padding:6px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:600 15px/1.2 Overpass,sans-serif;text-align:left;cursor:pointer}
+.tabs button small{display:block;font-weight:400;font-size:13px;color:var(--muted)}
+.tabs button[aria-selected=true]{background:var(--ink);color:var(--land);border-color:var(--ink)}
+.tabs button[aria-selected=true] small{color:inherit;opacity:.8}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--route);outline-offset:2px}
+.wrap{max-width:1240px;margin:auto;padding:0 max(4vw,16px,env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(4vw,16px,env(safe-area-inset-left));display:grid;gap:18px}
+.mapbox{position:relative;border-radius:16px;overflow:hidden;border:1.5px solid var(--line);background:var(--land);height:min(50vh,460px);min-height:300px}
+.mapbox svg{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab;user-select:none}
+.mapbox svg.drag{cursor:grabbing}
+.ctrl{position:absolute;right:10px;top:10px;display:grid;gap:6px}
+.ctrl button{width:44px;height:44px;border-radius:10px;border:1.5px solid var(--line);background:color-mix(in srgb,var(--panel) 88%,transparent);color:var(--ink);font:800 20px/1 Overpass,sans-serif;cursor:pointer}
+.ctrl button.fit{font-size:12px}
+.legend{position:absolute;left:10px;bottom:10px;display:flex;gap:10px;background:color-mix(in srgb,var(--panel) 90%,transparent);padding:5px 10px;border-radius:10px;font-size:12px;color:var(--muted);white-space:nowrap}
+.legend i{display:inline-block;width:10px;height:10px;margin-right:5px;vertical-align:-1px}
+.lg-r{background:var(--route);border-radius:50%}.lg-f{background:var(--brown);transform:rotate(45deg)}.lg-h{background:var(--ink)}.lg-t{border-top:2px dotted var(--blue);height:0!important;width:16px!important}
+.hint{position:absolute;left:10px;top:10px;font-size:12px;color:var(--muted);background:color-mix(in srgb,var(--panel) 85%,transparent);padding:3px 8px;border-radius:8px}
+.now{display:none;margin:0 0 12px;padding:12px 14px;border-radius:12px;background:var(--route);color:#fff;font-weight:600}
+.now.on{display:block}
+.dayhead h2{font-size:clamp(24px,4vw,32px)}
+.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.facts span{padding:4px 10px;border-radius:999px;background:var(--panel);border:1px solid var(--line);font-size:14px;white-space:nowrap}
+ol.plan{list-style:none;margin:16px 0 0;padding:0}
+.step{display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;padding:14px 12px;border-radius:14px;cursor:pointer;scroll-margin-top:12px}
+.step.sel{background:var(--panel);box-shadow:0 0 0 2px var(--route) inset}
+.time{font:800 20px/1.1 Overpass,sans-serif;white-space:nowrap;padding-top:2px}
+.step h3{font-size:18px;display:flex;gap:8px;align-items:baseline}
+.n{flex:none;display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--route);color:#fff;font-size:13px}
+.n.h{border-radius:5px;background:var(--ink);color:var(--land)}.n.t{background:var(--blue)}
+.step p{margin:6px 0 0}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.acts a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--land);text-decoration:none;font-weight:600;font-size:14px}
+.eat{margin-top:12px;display:grid;gap:8px}
+.food{border-left:4px solid var(--brown);padding:8px 12px;background:color-mix(in srgb,var(--brown) 8%,var(--panel));border-radius:0 10px 10px 0}
+.food b{display:block}
+.food small{display:block;color:var(--muted);font-size:13px}
+.food a{font-size:14px;font-weight:600}
+.snack{margin-top:10px;padding:8px 12px;border-radius:10px;background:color-mix(in srgb,var(--brown) 5%,transparent);border:1px dashed color-mix(in srgb,var(--brown) 45%,transparent);font-size:15px}
+.snack b{color:var(--brown)}
+.tix{margin-top:12px;padding:10px 12px;border-radius:10px;border-left:4px solid var(--blue);background:color-mix(in srgb,var(--blue) 9%,var(--panel));font-size:15px}
+.tix b{display:block;color:var(--blue);margin-bottom:2px}
+.tix ol{margin:4px 0 0;padding-left:20px}
+.tix li{margin:2px 0}
+.leg{margin-left:68px;padding:2px 12px;color:var(--muted);font-size:14px;border-left:2px dashed var(--line)}
+.card{background:var(--panel);border:1.5px solid var(--line);border-radius:14px;padding:16px;margin-top:14px}
+.card h3{font-size:18px}
+.card p{margin:8px 0 0}
+.card ol{margin:8px 0 0;padding-left:22px}.card li{margin:6px 0}
+.check label{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.check input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--route)}
+.check label.done span{text-decoration:line-through;color:var(--muted)}
+.foot{color:var(--muted);font-size:13px;margin-top:20px}
+table{border-collapse:collapse;width:100%;font-size:15px;margin-top:8px}
+td{padding:8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{width:8.5em;color:var(--muted);padding-right:10px}
+@media(min-width:900px){.wrap{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start}.mapcol{position:sticky;top:12px}.mapbox{height:calc(100vh - 160px);max-height:760px}}
+@media(prefers-reduced-motion:no-preference){.step{transition:background .2s,box-shadow .2s}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><img src="icons/icon-192.png" alt="" width="68" height="68"><div><h1>Turners in Paris</h1><p style="margin:2px 0 0">26–28 Nov 2026 · stroller-friendly · no taxis</p></div></div>
+  <p>Staying at WS Saint-Lazare – Lafayette, 29 Rue Saint-Lazare. Tap a stop on the map or the list; drag or pinch the map to explore.</p>
+  <p class="install" id="install"><span id="installText">Add this to your home screen: tap Share, then <b>Add to Home Screen</b>. It works offline too.</span><button id="installBtn" type="button">Got it</button></p>
+  <nav class="tabs" id="tabs" role="tablist"></nav>
+</header>
+<div class="wrap">
+  <div class="mapcol">
+    <div class="mapbox">
+      <svg id="map" role="img" aria-label="Map of the day's route"></svg>
+      <div class="ctrl"><button id="zin" aria-label="Zoom in">+</button><button id="zout" aria-label="Zoom out">−</button><button id="zfit" class="fit" aria-label="Fit the whole day">Fit</button></div>
+      <div class="legend"><span><i class="lg-r"></i>Stop</span><span><i class="lg-f"></i>Food</span><span><i class="lg-h"></i>Hotel</span><span><i class="lg-t"></i>Ride</span></div>
+    </div>
+  </div>
+  <section id="list" aria-live="polite"></section>
+</div>
+<script>
+{
+const COS=Math.cos(48.86*Math.PI/180),K=10000,LAT1=48.895,LNG0=2.27;
+const P=(lat,lng)=>[(lng-LNG0)*COS*K,(LAT1-lat)*K];
+const HOTEL={lat:48.8768,lng:2.3352,q:'29 Rue Saint-Lazare, 75009 Paris'};
+const H=o=>Object.assign({lat:HOTEL.lat,lng:HOTEL.lng,q:HOTEL.q,hotel:1},o);
+
+const TIX={
+ funi:`<b>How to pay: funicular</b>Easiest: tap a contactless bank card (or a phone with Apple/Google Pay) on the reader at the entry gate, €2.55 per person. Tap again for the second adult. A Metro-Train-RER ticket from the app works too. The toddler rides free.`,
+ bus:`<b>How to pay: bus</b><ol><li><b style="display:inline;color:inherit">Best:</b> before you board, buy a Bus-Tram ticket (€2.05) in the Bonjour RATP app on each adult's phone.</li><li>Board by the middle doors with the stroller, then hold your phone to the purple validator near the doors until it beeps.</li><li>No ticket? Tap a contactless bank card on the purchase terminal at the front, €2.55 each. One card can pay for up to 4 people; wait 2 seconds between taps.</li><li>Paris buses no longer sell tickets for cash. Keep your phone or card handy for inspectors.</li></ol>`,
+ metro:`<b>How to pay: metro line 14</b><ol><li><b style="display:inline;color:inherit">Best:</b> a Metro-Train-RER ticket (€2.55) bought ahead in the Bonjour RATP app; tap your phone on the gate reader.</li><li>No app? At the Madeleine ticket machines, buy a Navigo Easy card (€2) and load a Metro-Train-RER ticket on it. Bank cards don't open metro gates yet.</li><li>With the stroller, use the wide gate and take the lifts down to line 14.</li></ol>`
+};
+
+const FOOD={
+ lepic:{name:'À la Mère de Famille & Stohrer, Rue Lepic',lat:48.8847,lng:2.3347,q:'23 Rue Lepic, 75018 Paris',what:'Two old Paris sweet houses under one roof: pastries, chocolates and sweets for the walk down.',hrs:'Check on the day'},
+ gaudard:{name:'Sébastien Gaudard',lat:48.8781,lng:2.3394,q:'Sébastien Gaudard, 22 Rue des Martyrs, Paris',what:'Classic pâtisserie: chouquettes (sugar puffs that toddlers love) and Paris-Brest.',hrs:'Closed Mon · roughly 10:00–20:00'},
+ gourmet:{name:'Lafayette Gourmet',lat:48.8741,lng:2.3309,q:'Lafayette Gourmet, 35 Boulevard Haussmann, Paris',what:'Food hall opposite the main store: picnic bits, fruit and snacks.',hrs:'Store hours'},
+ cemarket:{name:'Champs-Élysées Christmas market',lat:48.8668,lng:2.3160,q:'Marché de Noël des Champs-Élysées, Paris',what:'Back after ten years: about 200 chalets at the Concorde end of the avenue. Waffles, crêpes, hot chocolate and mulled wine.',hrs:'10:00–22:00 (23:00 Fri–Sun)'},
+ tuilmarket:{name:'Tuileries Christmas market',lat:48.8650,lng:2.3245,q:'Marché de Noël des Tuileries, Paris',what:'Raclette, pretzels, waffles and mulled wine, plus fairground rides. It opens at 11:00, so this is a Thursday-evening stop.',hrs:'Usually 11:00–23:45'},
+ pigalle:{name:'Bouillon Pigalle',lat:48.8826,lng:2.3378,q:'Bouillon Pigalle, 22 Boulevard de Clichy, Paris',what:'Cheap, fast French classics in a huge room. Arrive around 18:45 to beat the queue.',hrs:'Daily 12:00–24:00'},
+ angelina:{name:'Angelina',lat:48.8651,lng:2.3288,q:'Angelina, 226 Rue de Rivoli, Paris',what:'Famously thick hot chocolate and Mont-Blanc. Take it to go if there is a queue.',hrs:'From 07:30/08:00 to 19:00/19:30'},
+ ndmarket:{name:'Notre-Dame Christmas market',lat:48.8520,lng:2.3470,q:'Square René Viviani, Paris',what:'Small market opposite the cathedral: something warm in hand with the view.',hrs:'From 26 Nov'},
+ shakes:{name:'Shakespeare and Company Café',lat:48.8526,lng:2.3474,q:'Shakespeare and Company Café, 37 Rue de la Bûcherie, Paris',what:'Coffee, bagels and cakes facing Notre-Dame.',hrs:'Daily, roughly 09:00–19:00'},
+ berthillon:{name:'Berthillon',lat:48.8517,lng:2.3568,q:'Berthillon, 31 Rue Saint-Louis en l\'Île, Paris',what:'The famous ice cream, or a warm seat in the tea room. Buy at the original shop.',hrs:'Wed–Sun 10:00–20:00'},
+ luxbuvette:{name:'Luxembourg kiosk cafés',lat:48.8478,lng:2.3362,q:'Jardin du Luxembourg, Paris',what:'Two kiosks in the garden with food to eat there or take away. Coffee while the toddler naps.',hrs:'Garden hours'},
+ sgmarket:{name:'Saint-Germain Christmas market',lat:48.8540,lng:2.3337,q:'Place Saint-Germain-des-Prés, Paris',what:'Little decorated chalets with seasonal treats, opening 27 Nov. About 10 min from the Luxembourg.',hrs:'From 27 Nov'},
+ cler:{name:'Stohrer, Rue Cler',lat:48.8573,lng:2.3062,q:'Stohrer, 35 Rue Cler, Paris',what:'Pastries and chocolates on a market street 10 min from the tower.',hrs:'Check on the day'},
+ meredefamille:{name:'À la Mère de Famille',lat:48.8737,lng:2.3433,q:'À la Mère de Famille, 35 Rue du Faubourg Montmartre, Paris',what:'Paris\'s oldest chocolate shop (1761), all old wooden counters. Pick a treat for later.',hrs:'Mon–Sat 9:30–20:00'},
+ chartier:{name:'Bouillon Chartier',lat:48.8720,lng:2.3436,q:'Bouillon Chartier, 7 Rue du Faubourg Montmartre, Paris',what:'1896 dining hall with cheap classics. No bookings; the queue moves fast.',hrs:'Daily 11:30–24:00'},
+ stohrer:{name:'Stohrer',lat:48.8651,lng:2.3470,q:'Stohrer, 51 Rue Montorgueil, Paris',what:'Paris\'s oldest pâtisserie (1730), birthplace of the rum baba.',hrs:'Daily 08:00–20:30'},
+ kitsune:{name:'Café Kitsuné',lat:48.8655,lng:2.3372,q:'Café Kitsuné, 51 Galerie de Montpensier, Paris',what:'Tiny coffee bar in the Palais-Royal arcades.',hrs:'Daily, roughly 08:30–19:00'}
+};
+
+const DAYS=[
+{id:'thu',tab:'Thu 26',sub:'0–3°C · dry',title:'Montmartre, Christmas lights and the Champs-Élysées',facts:['Arrive 12:51 Gare du Nord','0–3°C, dry','No taxis'],steps:[
+ {t:'12:51',name:'Gare du Nord',lat:48.8809,lng:2.3553,note:'Off the Eurostar. Do a nappy change in the station.',snack:'Grab a pain au chocolat from a station bakery for the walk.'},
+ {t:'13:15',name:'Montmartre funicular',lat:48.8846,lng:2.3426,via:[[48.8825,2.3520],[48.8838,2.3497],[48.8834,2.3437]],note:'Walk via Rue de Dunkerque and Rue de Steinkerque. There is a carousel at the bottom of the gardens. Ignore the string-bracelet sellers.'},
+ {t:'13:45',name:'Sacré-Cœur terrace',lat:48.8867,lng:2.3431,how:'funi',note:'About 90 seconds up, saving you 200+ steps. Big view over Paris.',tix:'funi'},
+ {t:'14:00',name:'Place du Tertre',lat:48.8865,lng:2.3408,note:'Artists\' square on bumpy cobbles. Late lunch here.',snack:'Crêpes around the square: a sugar-and-butter crêpe for the toddler, a hot chocolate for everyone.'},
+ {t:'15:00',name:'Place des Abbesses',lat:48.8845,lng:2.3385,via:[[48.8862,2.3378]],note:'Downhill from here. The "I love you" wall is in the little square.',food:['lepic']},
+ {t:'15:25',name:'Rue des Martyrs',lat:48.8790,lng:2.3397,via:[[48.8828,2.3398]],note:'A street of bakeries, cheese shops and grocers, all downhill.',food:['gaudard'],snack:'Pick up something for the room: a baguette, some cheese and clementines.'},
+ H({t:'16:00',name:'Check in',via:[[48.8763,2.3388]],note:'Rest, and maybe a nap. It is dark by 17:00.'}),
+ {t:'17:15',name:'Galeries Lafayette',lat:48.8738,lng:2.3320,via:[[48.8762,2.3330],[48.8742,2.3328]],note:'Castelbajac\'s colourful tree under the dome, animated windows at toddler height, and Printemps windows next door. The rooftop terrace is free (the rink is age 4+). There is baby changing inside.',food:['gourmet']},
+ {t:'17:45',name:'Bus 52 · Opéra – Rue Halévy',lat:48.8724,lng:2.3332,q:'Opéra - Rue Halévy bus stop, Paris',note:'The stop is beside the store. Ride to "Charles de Gaulle – Étoile – Friedland", about 20 min.',tix:'bus'},
+ {t:'18:05',name:'Arc de Triomphe',lat:48.8738,lng:2.2950,how:'bus',bus:'52',via:[[48.8738,2.3250],[48.8735,2.3105],[48.8745,2.3005]],note:'Look at it from the top of the Champs-Élysées. Never cross the roundabout; the underpass to the Arc has stairs.'},
+ {t:'18:15',name:'Champs-Élysées',lat:48.8698,lng:2.3075,note:'Walk down under the Christmas lights, about 30 min and gently downhill.',food:['cemarket'],snack:'<b>Food activity:</b> make dinner a chalet crawl. Waffles and crêpes for the little one, mulled wine (vin chaud) for the grown-ups.'},
+ {t:'19:00',name:'Place de la Concorde',lat:48.8656,lng:2.3212,note:'The obelisk lit up, with views back up the avenue. The Tuileries Christmas market starts right here.',food:['tuilmarket'],snack:'<b>Food activity:</b> share a raclette or a warm pretzel, then a bag of churros for the walk.'},
+ {t:'19:15',name:'Madeleine · metro 14',lat:48.8700,lng:2.3245,q:'Madeleine metro station, Paris',via:[[48.8662,2.3220]],note:'Walk up Rue Royale. Line 14 has lifts; it is one stop to Saint-Lazare. Or walk back to the hotel (about 20 min).',tix:'metro'},
+ H({t:'19:35',name:'Back to hotel',how:'metro',via:[[48.8763,2.3255]],note:'About 10 min walk from Saint-Lazare. Bedtime.'})
+]},
+{id:'fri',tab:'Fri 27',sub:'0–4°C · dry',title:'The big Seine walk to the Eiffel Tower',facts:['0–4°C, dry','No taxis','Leave the backpack at the hotel','Book a Notre-Dame slot'],steps:[
+ H({t:'09:00',name:'Leave hotel',note:'Leave the big backpack here. Notre-Dame turns away bags bigger than 40 × 30 × 20 cm.',snack:'Breakfast: croissants and pain au chocolat from a boulangerie on the way.'}),
+ {t:'09:15',name:'Opéra Garnier',lat:48.8719,lng:2.3316,via:[[48.8762,2.3330],[48.8722,2.3327]],note:'Then down Rue de la Paix.'},
+ {t:'09:30',name:'Place Vendôme',lat:48.8675,lng:2.3294,via:[[48.8680,2.3300]],note:'Grand square, flat and quiet in the morning.'},
+ {t:'09:45',name:'Tuileries Garden',lat:48.8638,lng:2.3275,via:[[48.8648,2.3283]],note:'Playgrounds and a carousel, so let the toddler run. The Christmas market chalets don\'t open until 11:00; you saw them last night.',food:['angelina'],snack:'Warm up with Angelina\'s hot chocolate to go, sipped in the garden.'},
+ {t:'10:30',name:'Louvre pyramid',lat:48.8610,lng:2.3358,via:[[48.8625,2.3330]],note:'Courtyard only. Skip the inside with an 18-month-old.'},
+ {t:'10:50',name:'Pont des Arts',lat:48.8583,lng:2.3375,note:'Footbridge with the classic view up to Île de la Cité.'},
+ {t:'11:15',name:'Notre-Dame',lat:48.8530,lng:2.3499,via:[[48.8578,2.3405],[48.8562,2.3420],[48.8546,2.3468]],note:'Free entry. Book a free slot on notredamedeparis.fr or the app (slots open 1–2 days ahead). Strollers are allowed. Allow 30–45 min.'},
+ {t:'12:15',name:'Square René Viviani',lat:48.8522,lng:2.3473,via:[[48.8527,2.3482]],note:'Lunch with the best view back to the cathedral.',food:['ndmarket','shakes','berthillon']},
+ {t:'13:15',name:'Jardin du Luxembourg',lat:48.8462,lng:2.3372,via:[[48.8510,2.3440],[48.8475,2.3415]],note:'Nap walk, then coffee while they sleep. Afterwards, the big fenced playground (small fee) and the carousel (bring coins).',food:['luxbuvette','sgmarket'],snack:'Roasted chestnuts (marrons chauds) from street sellers are a Paris winter classic.'},
+ {t:'15:30',name:'Bus 82 · Luxembourg',lat:48.8470,lng:2.3330,q:'Luxembourg bus 82 terminus, Paris',note:'Board at the Luxembourg terminus, direction "Hôpital Américain", and get off at "Champ de Mars" (about 30 min). Buses come every 20–30 min, so check the next one in the app.',tix:'bus'},
+ {t:'16:05',name:'Champ de Mars',lat:48.8556,lng:2.2986,how:'bus',bus:'82',note:'Flat lawns with the tower ahead (Trocadéro has steps).',food:['cler'],snack:'A crêpe from the stands by the tower, eaten while it gets dark.'},
+ {t:'17:00',name:'Pont d\'Iéna',lat:48.8600,lng:2.2925,via:[[48.8584,2.2945]],note:'After dark the tower sparkles for 5 min on the hour. Watch the 17:00 sparkle from the bridge.'},
+ {t:'17:10',name:'Bus 42 · Tour Eiffel',lat:48.8578,lng:2.2952,q:'Tour Eiffel bus stop, Paris',note:'Direction "Gare Saint-Lazare", all the way to the end of the line (about 30–35 min). It passes the Champs-Élysées, Concorde and the Madeleine, all lit up.',tix:'bus'},
+ H({t:'17:50',name:'Back to hotel',how:'bus',bus:'42',via:[[48.8640,2.3010],[48.8656,2.3212],[48.8700,2.3245],[48.8763,2.3255]],note:'About 8 min on foot from Gare Saint-Lazare. Easy dinner 10 min from the hotel:',food:['pigalle']})
+]},
+{id:'sat',tab:'Sat 28',sub:'2–7°C · dry',title:'Covered passages, a market street, train home',facts:['Check out by 11:00','At Eurostar departures by 17:35','Train 19:03','No taxis'],steps:[
+ H({t:'09:00',name:'Check out',note:'Leave your bags at reception.',snack:'Last boulangerie breakfast. Try a chausson aux pommes (apple turnover).'}),
+ {t:'09:45',name:'Passage Verdeau',lat:48.8737,lng:2.3427,via:[[48.8762,2.3388],[48.8752,2.3432]],note:'Glass-roofed 19th-century arcades: flat and sheltered.',food:['meredefamille']},
+ {t:'10:00',name:'Passage Jouffroy',lat:48.8727,lng:2.3423,note:'Old-fashioned toy and dolls\' house shops. A short flight of steps at the bend, so lift the stroller.'},
+ {t:'10:20',name:'Passage des Panoramas',lat:48.8712,lng:2.3417,note:'Across the boulevard. Lots of places to eat if hunger strikes early.',food:['chartier']},
+ {t:'11:00',name:'Rue Montorgueil',lat:48.8652,lng:2.3468,via:[[48.8690,2.3442],[48.8672,2.3474]],note:'Pedestrian market street, busy on Saturdays.',food:['stohrer'],snack:'<b>Food activity:</b> build a picnic lunch from the stalls: a baguette, a wedge of cheese, fruit and a rum baba from Stohrer.'},
+ {t:'12:30',name:'Galerie Vivienne',lat:48.8664,lng:2.3399,via:[[48.8660,2.3440],[48.8667,2.3412]],note:'The prettiest of the arcades.'},
+ {t:'12:45',name:'Palais-Royal gardens',lat:48.8650,lng:2.3375,note:'A quiet walled garden. Eat the picnic here; the striped Buren columns are made for clambering.',food:['kitsune']},
+ {t:'13:30',name:'Opéra (nap walk)',lat:48.8719,lng:2.3316,via:[[48.8635,2.3360]],note:'Up Avenue de l\'Opéra while they sleep. Stop for a long café break if they\'re still out.',food:['gourmet'],snack:'Pack the train picnic at Lafayette Gourmet. You get back into London at 20:30.'},
+ H({t:'16:30',name:'Collect bags',via:[[48.8740,2.3328],[48.8762,2.3330]],note:'Leave by 16:55 to walk to Gare du Nord. The backpack can hang on the stroller handle or go in the basket.'}),
+ {t:'17:30',name:'Gare du Nord · Eurostar',lat:48.8809,lng:2.3553,via:[[48.8762,2.3388],[48.8775,2.3470],[48.8800,2.3540]],note:'About 30 min on foot along Rue La Fayette. If it rains, take a taxi from the hotel instead. Ticket checks close at 18:33; the train leaves at 19:03 and arrives in London at 20:30, so have pyjamas, dinner and milk to hand.',snack:'Last-minute snacks for the train: there are cafés and a bakery in Gare du Nord.'}
+]},
+{id:'tickets',tab:'Tickets',sub:'How to buy',title:'Tickets: how to buy and what it costs',flat:1,facts:['Book: Notre-Dame only (free)','Transport for 2 adults ≈ €22.50','Under-4s free','No taxis'],steps:[
+ {t:'Thu',name:'Montmartre funicular',lat:48.8846,lng:2.3426,q:'Funiculaire de Montmartre, Paris',note:'€2.55 each.',tix:'funi'},
+ {t:'Thu',name:'Bus 52 · Opéra – Rue Halévy',lat:48.8724,lng:2.3332,q:'Opéra - Rue Halévy bus stop, Paris',note:'€2.05 each with an app ticket, or €2.55 with a bank card on board.',tix:'bus'},
+ {t:'Thu',name:'Madeleine · metro 14',lat:48.8700,lng:2.3245,q:'Madeleine metro station, Paris',note:'€2.55 each.',tix:'metro'},
+ {t:'Fri',name:'Notre-Dame',lat:48.8530,lng:2.3499,note:'Free. Book a free time slot on notredamedeparis.fr or the app. Slots open 1–2 days ahead, so book on Wednesday or Thursday.'},
+ {t:'Fri',name:'Jardin du Luxembourg',lat:48.8462,lng:2.3372,note:'The garden is free. The big playground has a small entry fee and the carousel is paid at the ride, so bring a few euros in coins.'},
+ {t:'Fri',name:'Bus 82 · Luxembourg',lat:48.8470,lng:2.3330,q:'Luxembourg bus stop line 82, Paris',note:'€2.05 each with an app ticket, or €2.55 with a bank card on board.',tix:'bus'},
+ {t:'Fri',name:'Bus 42 · Tour Eiffel',lat:48.8578,lng:2.2952,q:'Tour Eiffel bus stop, Paris',note:'€2.05 each with an app ticket, or €2.55 with a bank card on board.',tix:'bus'},
+ {t:'Fri',name:'Seine cruise (optional)',lat:48.8597,lng:2.2930,q:'Bateaux Parisiens, Port de la Bourdonnais, Paris',note:'From €17 per adult; under-4s free. Buy at the pier; tickets aren\'t timed.'}
+]},
+{id:'ideas',tab:'Ideas',sub:'If there\'s energy',title:'Extra idea',flat:1,facts:['Optional swap'],steps:[
+ {t:'Fri',name:'Seine cruise',lat:48.8597,lng:2.2930,q:'Bateaux Parisiens, Port de la Bourdonnais, Paris',note:'Instead of the Champ de Mars stroll: a 1-hour heated, glass-roofed boat from beside the Eiffel Tower. From €17 per adult; under-4s free. Tickets aren\'t timed, so there\'s no need to book ahead.'}
+]}
+];
+
+const ROADS=[
+ {n:'Rue de Rivoli',w:1.2,p:[[48.8655,2.3215],[48.8605,2.3410],[48.8575,2.3520],[48.8555,2.3600]]},
+ {n:'Bd Haussmann',w:1.2,p:[[48.8735,2.3105],[48.8738,2.3250],[48.8735,2.3330],[48.8725,2.3390]]},
+ {n:'Grands Boulevards',w:1.2,p:[[48.8697,2.3255],[48.8708,2.3310],[48.8715,2.3370],[48.8716,2.3420],[48.8706,2.3480],[48.8695,2.3540]]},
+ {n:'Bd de Clichy',w:1.2,p:[[48.8836,2.3270],[48.8822,2.3375],[48.8826,2.3440],[48.8836,2.3500],[48.8840,2.3560]]},
+ {n:'Bd Saint-Germain',w:1.2,p:[[48.8590,2.3200],[48.8540,2.3335],[48.8505,2.3440],[48.8500,2.3555]]},
+ {n:'Bd Saint-Michel',w:1.1,p:[[48.8532,2.3440],[48.8460,2.3405],[48.8410,2.3375]]},
+ {n:'Champs-Élysées',w:1.5,p:[[48.8738,2.2950],[48.8656,2.3212]]},
+ {n:'Av de l\'Opéra',w:1.1,p:[[48.8708,2.3316],[48.8630,2.3360]]},
+ {n:'Rue La Fayette',w:1,p:[[48.8738,2.3330],[48.8775,2.3470],[48.8810,2.3580]]},
+ {n:'Rue Saint-Lazare',w:.9,p:[[48.8762,2.3388],[48.8766,2.3330],[48.8763,2.3250]]},
+ {n:'Rue de Dunkerque',w:.8,p:[[48.8809,2.3553],[48.8825,2.3520],[48.8838,2.3497]]},
+ {n:'Rue des Martyrs',w:.8,p:[[48.8828,2.3398],[48.8762,2.3390]]},
+ {n:'Rue de la Paix',w:.8,p:[[48.8705,2.3315],[48.8680,2.3300]]},
+ {n:'Rue de Castiglione',w:.8,p:[[48.8670,2.3290],[48.8648,2.3283]]},
+ {n:'Rue Royale',w:.9,p:[[48.8697,2.3245],[48.8660,2.3218]]},
+ {n:'Av de Friedland',w:1,p:[[48.8735,2.3105],[48.8745,2.3005]]},
+ {n:'Rue du Fbg Montmartre',w:.8,p:[[48.8762,2.3448],[48.8717,2.3432]]},
+ {n:'Rue Montmartre',w:.8,p:[[48.8712,2.3440],[48.8640,2.3450]]},
+ {n:'Rue Montorgueil',w:.8,p:[[48.8685,2.3477],[48.8635,2.3465]]},
+ {n:'Rue Saint-Honoré',w:.8,p:[[48.8690,2.3230],[48.8630,2.3400]]},
+ {n:'Av de la Bourdonnais',w:.9,p:[[48.8605,2.2960],[48.8530,2.3040]]},
+ {n:'Rue de Rennes',w:.9,p:[[48.8538,2.3340],[48.8420,2.3215]]},
+ {n:'Rue Lepic',w:.7,p:[[48.8866,2.3365],[48.8848,2.3345],[48.8838,2.3325]]},
+ {n:'Bd Magenta',w:1,p:[[48.8838,2.3497],[48.8790,2.3570],[48.8720,2.3620]]}
+];
+const SEINE=[[48.8490,2.2770],[48.8530,2.2820],[48.8565,2.2880],[48.8600,2.2930],[48.8628,2.2990],[48.8640,2.3060],[48.8642,2.3135],[48.8636,2.3215],[48.8612,2.3285],[48.8590,2.3350],[48.8575,2.3400],[48.8560,2.3455],[48.8540,2.3500],[48.8520,2.3535],[48.8495,2.3575],[48.8470,2.3615],[48.8430,2.3680],[48.8390,2.3740]];
+const PARKS=[
+ {n:'Tuileries',p:[[48.8660,2.3225],[48.8640,2.3335],[48.8615,2.3320],[48.8635,2.3210]]},
+ {n:'Luxembourg',p:[[48.8490,2.3330],[48.8492,2.3405],[48.8440,2.3410],[48.8443,2.3345]]},
+ {n:'Champ de Mars',p:[[48.8585,2.2950],[48.8532,2.3032],[48.8515,2.3005],[48.8570,2.2925]]},
+ {n:'',p:[[48.8668,2.3368],[48.8668,2.3385],[48.8640,2.3385],[48.8640,2.3368]]},
+ {n:'Champs-Élysées gardens',p:[[48.8678,2.3105],[48.8664,2.3215],[48.8650,2.3205],[48.8664,2.3095]]},
+ {n:'',p:[[48.8870,2.3415],[48.8870,2.3445],[48.8848,2.3445],[48.8848,2.3415]]},
+ {n:'Invalides',p:[[48.8620,2.3115],[48.8560,2.3125],[48.8558,2.3150],[48.8618,2.3145]]}
+];
+const MARKS=[
+ {n:'Opéra',lat:48.8720,lng:2.3316},{n:'Louvre',lat:48.8606,lng:2.3376},{n:'Notre-Dame',lat:48.8530,lng:2.3499},{n:'Sacré-Cœur',lat:48.8867,lng:2.3431},
+ {n:'Arc de Triomphe',lat:48.8738,lng:2.2950},{n:'Eiffel Tower',lat:48.8584,lng:2.2945,tower:1},{n:'Gare du Nord',lat:48.8809,lng:2.3553},{n:'Gare St-Lazare',lat:48.8763,lng:2.3250},
+ {n:'Madeleine',lat:48.8700,lng:2.3245},{n:'Panthéon',lat:48.8462,lng:2.3464},{n:'Grand Palais',lat:48.8661,lng:2.3125},{n:'Musée d\'Orsay',lat:48.8600,lng:2.3266},{n:'Pompidou',lat:48.8606,lng:2.3522}
+];
+
+const $=s=>document.querySelector(s);
+const svg=$('#map'),list=$('#list'),tabs=$('#tabs');
+const PT=a=>a.map(([la,ln])=>P(la,ln));
+const ptsStr=a=>PT(a).map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ');
+const hav=(a,b)=>{const R=6371e3,r=Math.PI/180,dl=(b[0]-a[0])*r,dn=(b[1]-a[1])*r;const h=Math.sin(dl/2)**2+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dn/2)**2;return 2*R*Math.asin(Math.sqrt(h))};
+const path=(a,b)=>[[a.lat,a.lng],...(b.via||[]),[b.lat,b.lng]];
+const plen=pp=>{let m=0;for(let i=1;i<pp.length;i++)m+=hav(pp[i-1],pp[i]);return m};
+const legM=(a,b)=>plen(path(a,b))*(b.via?1.1:1.25);
+const leg=(a,b)=>{const m=legM(a,b);
+ if(b.how==='funi')return'Funicular · about 2 min';
+ if(b.how==='bus')return'Bus '+(b.bus||'52')+' · about '+({'52':20,'82':30,'42':35}[b.bus||'52'])+' min'+(b.bus==='42'?', then an 8 min walk':'');
+ if(b.how==='metro')return'Metro line 14, one stop, then a 10 min walk';
+ if(b.how==='taxi')return'Taxi · about '+Math.max(10,Math.round(m/1000/18*60+5))+' min';
+ return'Walk · about '+Math.max(2,Math.round(m/1000/4*60))+' min · '+(m/1000).toFixed(1)+' km'};
+const gmap=q=>'https://www.google.com/maps/dir/?api=1&travelmode=walking&destination='+encodeURIComponent(q);
+const amap=q=>'https://maps.apple.com/?dirflg=w&daddr='+encodeURIComponent(q);
+const qOf=s=>s.q||(s.name.replace(/ \(.*\)/,'')+', Paris');
+let day=DAYS[0],sel=-1,view=null;
+
+function parisNow(){try{const f=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Paris',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());const g=t=>f.find(x=>x.type===t).value;return{d:g('year')+'-'+g('month')+'-'+g('day'),m:(+g('hour'))*60+(+g('minute'))}}catch(e){return null}}
+const DATES={'2026-11-26':'thu','2026-11-27':'fri','2026-11-28':'sat'};
+const mins=t=>{const[h,m]=t.split(':').map(Number);return h*60+m};
+
+function fit(){
+ const s=day.steps,f=s.flatMap(x=>(x.food||[]).map(k=>FOOD[k]));
+ const all=[...s.flatMap(x=>(x.via||[]).map(v=>P(v[0],v[1]))),...[...s,...f].map(p=>P(p.lat,p.lng))];
+ let x0=Math.min(...all.map(p=>p[0])),x1=Math.max(...all.map(p=>p[0])),y0=Math.min(...all.map(p=>p[1])),y1=Math.max(...all.map(p=>p[1]));
+ const pad=Math.max(x1-x0,y1-y0)*.12+16;x0-=pad;x1+=pad;y0-=pad;y1+=pad*1.6;
+ const cw=svg.clientWidth||360,ch=svg.clientHeight||300,ar=cw/ch;let w=x1-x0,h=y1-y0;
+ if(w/h<ar){const nw=h*ar;x0-=(nw-w)/2;w=nw}else{const nh=w/ar;y0-=(nh-h)/2;h=nh}
+ view={x:x0,y:y0,w,h};
+}
+
+function drawMap(){
+ if(!view)fit();
+ const cw=svg.clientWidth||360,ch=svg.clientHeight||300;
+ view.h=view.w*ch/cw;
+ const px=view.w/cw,u=px*11,s=day.steps,close=px<1.15;
+ svg.setAttribute('viewBox',`${view.x} ${view.y} ${view.w} ${view.h}`);
+ let o=`<rect x="-2000" y="-2000" width="6000" height="6000" fill="var(--land)"/>`;
+ o+=PARKS.map(p=>`<polygon points="${ptsStr(p.p)}" fill="var(--park)" stroke="var(--park)" stroke-width="${px*3}" stroke-linejoin="round"/>`).join('');
+ o+=ROADS.map(r=>`<polyline points="${ptsStr(r.p)}" fill="none" stroke="var(--roadedge)" stroke-width="${Math.max(px*6.5*r.w,3.4*r.w)}" stroke-linecap="round" stroke-linejoin="round"/>`).join('');
+ o+=ROADS.map(r=>`<polyline points="${ptsStr(r.p)}" fill="none" stroke="var(--road)" stroke-width="${Math.max(px*5*r.w,2.6*r.w)}" stroke-linecap="round" stroke-linejoin="round"/>`).join('');
+ const [cx,cy]=P(48.8867,2.3431);
+ o+=[1,2,3,4].map(i=>`<ellipse cx="${cx}" cy="${cy}" rx="${i*11}" ry="${i*8.5}" fill="none" stroke="var(--brown)" stroke-opacity=".3" stroke-width="${px*1.1}"/>`).join('');
+ o+=`<polyline points="${ptsStr(SEINE)}" fill="none" stroke="var(--seaedge)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/><polyline points="${ptsStr(SEINE)}" fill="none" stroke="var(--sea)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>`;
+ const isl=(la,ln,rx,ry)=>{const[x,y]=P(la,ln);return`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" transform="rotate(-24 ${x} ${y})" fill="var(--land)"/>`};
+ o+=isl(48.8553,2.3463,27,4.5)+isl(48.8515,2.3562,16,3.6);
+ const fs=px*11.5,L=[],occ=[];
+ const lab=(t,x,y,o2,pri)=>L.push({t,x,y,o2,pri});
+ const txt=(t,x,y,o2)=>`<text x="${x}" y="${y}" font-size="${o2.fs||fs}" fill="${o2.c||'var(--muted)'}" ${o2.it?'font-style="italic"':''} ${o2.w?`font-weight="${o2.w}"`:''} text-anchor="${o2.a||'middle'}" stroke="var(--land)" stroke-width="${px*3}" paint-order="stroke" ${o2.rot!=null?`transform="rotate(${o2.rot} ${x} ${y})"`:''}>${t}</text>`;
+ if(close)ROADS.forEach(r=>{const pp=PT(r.p),i=Math.floor((pp.length-1)/2),a=pp[i],b=pp[i+1];let ang=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI;if(ang>90)ang-=180;if(ang<-90)ang+=180;lab(r.n,(a[0]+b[0])/2,(a[1]+b[1])/2+px*4,{fs:px*10,it:1,rot:ang},1)});
+ PARKS.forEach(p=>{if(!p.n)return;const pp=PT(p.p),x=pp.reduce((a,b)=>a+b[0],0)/pp.length,y=pp.reduce((a,b)=>a+b[1],0)/pp.length;lab(p.n,x,y,{fs:px*10.5,c:'var(--parktext)',it:1},2)});
+ const [sx,sy]=P(48.8628,2.3080);lab('Seine',sx,sy,{c:'var(--blue)',it:1,w:600},3);
+ const [mx,my]=P(48.8898,2.3420);lab('Montmartre',mx,my,{c:'var(--brown)',it:1,w:600},3);
+ MARKS.forEach(m=>{const[x,y]=P(m.lat,m.lng);if(!m.tower&&s.some(q=>{const[a,b]=P(q.lat,q.lng);return Math.hypot(a-x,b-y)<px*22}))return;
+  if(m.tower)o+=`<path d="M${x-px*5} ${y+px*7} L${x} ${y-px*10} L${x+px*5} ${y+px*7} M${x-px*3.2} ${y+px*1} H${x+px*3.2}" fill="none" stroke="var(--ink)" stroke-width="${px*1.6}" stroke-linejoin="round"/>`;
+  else o+=`<circle cx="${x}" cy="${y}" r="${px*2.6}" fill="var(--muted)"/>`;
+  lab(m.n,x,y+px*(m.tower?19:14),{fs:px*10.5,c:'var(--ink)',w:600},4)});
+ // route
+ for(let i=1;i<s.length&&!day.flat;i++){const pp=PT(path(s[i-1],s[i])),ride=s[i].how&&s[i].how!=='funi';
+  const d=pp.map(p=>p.join(',')).join(' ');
+  if(ride)o+=`<polyline points="${d}" fill="none" stroke="var(--blue)" stroke-width="${px*2.6}" stroke-dasharray="${px*1} ${px*5}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  else o+=`<polyline points="${d}" fill="none" stroke="var(--land)" stroke-width="${px*7}" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/><polyline points="${d}" fill="none" stroke="var(--route)" stroke-width="${px*4}" stroke-dasharray="${px*9} ${px*5}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  if(close&&!ride&&pp.length>1){const k=Math.floor((pp.length-1)/2),a=pp[k],b=pp[k+1],ang=Math.atan2(b[1]-a[1],b[0]-a[0]),mx2=(a[0]+b[0])/2,my2=(a[1]+b[1])/2,r=px*5;
+   o+=`<path d="M${mx2+Math.cos(ang)*r} ${my2+Math.sin(ang)*r} L${mx2+Math.cos(ang+2.5)*r} ${my2+Math.sin(ang+2.5)*r} L${mx2+Math.cos(ang-2.5)*r} ${my2+Math.sin(ang-2.5)*r}Z" fill="var(--route)"/>`}}
+ const sf=sel>=0?(s[sel].food||[]):[];
+ for(const k of new Set(s.flatMap(x=>x.food||[]))){const p=FOOD[k],[x,y]=P(p.lat,p.lng),on=sf.includes(k),r=u*(on?.8:.6);
+  o+=`<rect x="${x-r}" y="${y-r}" width="${2*r}" height="${2*r}" transform="rotate(45 ${x} ${y})" fill="var(--brown)" stroke="var(--land)" stroke-width="${px*2}"/>`;
+  occ.push([x-r,y-r,x+r,y+r]);if(on||close)lab(p.name,x+r*1.7,y+px*4,{fs:px*(on?12:10.5),c:'var(--brown)',w:on?800:600,a:'start'},on?9:5)}
+ const drawn={};
+ s.forEach((p,i)=>{const[x,y]=P(p.lat,p.lng),key=p.lat+','+p.lng,on=i===sel;
+  if(p.hotel){const r=u*(on?1.05:.85);if(!drawn[key]||on)o+=`<g data-i="${i}" style="cursor:pointer"><rect x="${x-r}" y="${y-r}" width="${2*r}" height="${2*r}" rx="${r*.3}" fill="var(--ink)" stroke="${on?'var(--route)':'var(--land)'}" stroke-width="${px*2.5}"/><text x="${x}" y="${y+px*4}" font-size="${px*11}" font-weight="800" text-anchor="middle" fill="var(--land)">H</text></g>`}
+  else{const r=u*(on?1.2:.95),tr=p.tix&&p.tix!=='funi';o+=`<g data-i="${i}" style="cursor:pointer"><circle cx="${x}" cy="${y+px*1.5}" r="${r}" fill="#000" opacity=".15"/><circle cx="${x}" cy="${y}" r="${r}" fill="${tr?'var(--blue)':'var(--route)'}" stroke="var(--land)" stroke-width="${px*2.4}"/><text x="${x}" y="${y+px*4}" font-size="${px*(on?12:10.5)}" font-weight="800" text-anchor="middle" fill="#fff">${i+1}</text></g>`}
+  drawn[key]=1;occ.push([x-u,y-u,x+u,y+u]);
+  if(on||(close&&!p.hotel))lab(p.name,x,y-u*(on?1.7:1.45),{fs:px*(on?13:11),c:'var(--ink)',w:800},on?10:6)});
+ L.sort((a,b)=>b.pri-a.pri);let lo='';
+ for(const l of L){const f=l.o2.fs||fs,w=l.t.length*f*.56,h=f*1.15,al=l.o2.a||'middle',x0=al==='start'?l.x:l.x-w/2;let bx=[x0-px*2,l.y-h*.85,x0+w+px*2,l.y+h*.25];
+  if(l.o2.rot){const r=l.o2.rot*Math.PI/180,W=Math.abs(w*Math.cos(r))+Math.abs(h*Math.sin(r)),Hh=Math.abs(w*Math.sin(r))+Math.abs(h*Math.cos(r));bx=[l.x-W/2,l.y-Hh/2-h*.3,l.x+W/2,l.y+Hh/2-h*.3]}
+  const hit=[...occ].some(b=>!(bx[2]<b[0]||bx[0]>b[2]||bx[3]<b[1]||bx[1]>b[3]));
+  if(hit&&l.pri<9)continue;occ.push(bx);lo+=txt(l.t,l.x,l.y,l.o2)}
+ const sb=(px<.6?200:px<1.4?500:1000),sbu=sb*K/111320,bx=view.x+px*14,by=view.y+px*22;
+ o+=`<g stroke="var(--ink)" stroke-width="${px*2}"><line x1="${bx}" y1="${by}" x2="${bx+sbu}" y2="${by}"/><line x1="${bx}" y1="${by-px*4}" x2="${bx}" y2="${by+px*4}"/><line x1="${bx+sbu}" y1="${by-px*4}" x2="${bx+sbu}" y2="${by+px*4}"/></g>`+txt((sb>=1000?sb/1000+' km':sb+' m'),bx+sbu+px*6,by+px*4,{c:'var(--ink)',a:'start',fs:px*11});
+ svg.innerHTML=o+lo;
+}
+
+// pan & zoom
+let ptrs=new Map(),moved=0,startD=0,raf=0;
+const redraw=()=>{if(!raf)raf=requestAnimationFrame(()=>{raf=0;drawMap()})};
+const toV=(cx,cy)=>{const b=svg.getBoundingClientRect();return[view.x+(cx-b.left)/b.width*view.w,view.y+(cy-b.top)/b.height*view.h]};
+function zoomAt(f,cx,cy){const b=svg.getBoundingClientRect();if(cx==null){cx=b.left+b.width/2;cy=b.top+b.height/2}
+ const[vx,vy]=toV(cx,cy),nw=Math.min(Math.max(view.w*f,90),1400);const k=nw/view.w;view.x=vx-(vx-view.x)*k;view.y=vy-(vy-view.y)*k;view.w=nw;redraw()}
+svg.addEventListener('pointerdown',e=>{svg.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});moved=0;if(ptrs.size===2){const[a,b]=[...ptrs.values()];startD=Math.hypot(a.x-b.x,a.y-b.y)}svg.classList.add('drag')});
+svg.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;const prev=ptrs.get(e.pointerId),b=svg.getBoundingClientRect();
+ if(ptrs.size===1){const dx=e.clientX-prev.x,dy=e.clientY-prev.y;moved+=Math.abs(dx)+Math.abs(dy);view.x-=dx/b.width*view.w;view.y-=dy/b.height*view.h;ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});redraw()}
+ else if(ptrs.size===2){ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});const[a,c]=[...ptrs.values()],d=Math.hypot(a.x-c.x,a.y-c.y);if(startD>0){zoomAt(startD/d,(a.x+c.x)/2,(a.y+c.y)/2);startD=d;moved=99}}});
+const up=e=>{ptrs.delete(e.pointerId);if(!ptrs.size)svg.classList.remove('drag');startD=0};
+svg.addEventListener('pointerup',up);svg.addEventListener('pointercancel',up);
+svg.addEventListener('wheel',e=>{e.preventDefault();zoomAt(e.deltaY>0?1.15:1/1.15,e.clientX,e.clientY)},{passive:false});
+svg.addEventListener('click',e=>{if(moved>6)return;const g=e.target.closest('g[data-i]');if(g)select(+g.dataset.i,true)});
+$('#zin').onclick=()=>zoomAt(1/1.5);$('#zout').onclick=()=>zoomAt(1.5);$('#zfit').onclick=()=>{fit();drawMap()};
+new ResizeObserver(()=>{if(view)drawMap()}).observe(svg);
+
+function foodCard(k){const p=FOOD[k];return`<div class="food"><b>${p.name}</b>${p.what}<small>${p.hrs}</small><a href="${gmap(p.q)}" target="_blank" rel="noopener">Directions</a></div>`}
+
+function render(){
+ const s=day.steps,flat=!!day.flat;
+ let walk=0;for(let i=1;i<s.length;i++)if(!s[i].how)walk+=legM(s[i-1],s[i]);
+ const facts=[...day.facts];if(!flat)facts.splice(1,0,'About '+(walk/1000).toFixed(1)+' km on foot');
+ let h=`<p class="now" id="now"></p><div class="dayhead"><h2>${day.title}</h2><div class="facts">${facts.map(f=>`<span>${f}</span>`).join('')}</div></div>`;
+ if(day.id==='tickets')h+=ticketCard();
+ h+='<ol class="plan">';
+ s.forEach((p,i)=>{
+  if(i>0&&!flat)h+=`<li class="leg">${leg(s[i-1],p)}</li>`;
+  h+=`<li class="step${i===sel?' sel':''}" id="s${i}" data-i="${i}"><div class="time">${p.t}</div><div><h3><span class="n${p.hotel?' h':p.tix&&p.tix!=='funi'?' t':''}">${p.hotel?'H':i+1}</span>${p.name}</h3><p>${p.note}</p>
+  ${p.tix?`<div class="tix">${TIX[p.tix]}</div>`:''}
+  ${p.snack?`<div class="snack">${/^<b>/.test(p.snack)?p.snack:'<b>Snack idea:</b> '+p.snack}</div>`:''}
+  ${p.food?`<div class="eat">${p.food.map(foodCard).join('')}</div>`:''}
+  <div class="acts"><a href="${gmap(qOf(p))}" target="_blank" rel="noopener">Google Maps</a><a href="${amap(qOf(p))}" target="_blank" rel="noopener">Apple Maps</a></div></div></li>`});
+ h+='</ol>';
+ if(day.id==='sat'||flat)h+=extras();
+ h+=`<p class="foot">Opening hours and prices checked 22 Nov 2026. Walking times assume a stroller pace of about 4 km/h. The map is drawn by hand, so use the Google or Apple Maps buttons for turn-by-turn directions.</p>`;
+ list.innerHTML=h;
+ nowBanner();
+ if(day.id==='sat'||flat)bindChecks();
+}
+
+function ticketCard(){return`<div class="card"><h3>Before you go (5 minutes)</h3><ol>
+ <li>Install <b>Bonjour RATP</b> on each adult's phone. It works on iPhone (tickets go in Apple Wallet) and Android.</li>
+ <li>On each phone, buy <b>3 Bus-Tram tickets</b> (€2.05 each) and <b>1 Metro-Train-RER ticket</b> (€2.55).</li>
+ <li>To use one, hold the top of your phone to the reader on the bus or at the metro gate until it beeps.</li>
+ <li>Backups if the app fails: on buses and the funicular, tap a contactless bank card on board (€2.55). For the metro, buy a €2 Navigo Easy card from a station machine and load a ticket on it.</li></ol>
+ <table><tr><td>Bus-Tram × 6</td><td>€12.30 (buses 52, 82 and 42)</td></tr><tr><td>Metro × 2</td><td>€5.10 (line 14 on Thursday)</td></tr><tr><td>Funicular × 2</td><td>€5.10 (tap a bank card at the gate)</td></tr><tr><td>Total</td><td><b>about €22.50 for two adults</b>; the toddler rides free</td></tr></table>
+ <p>Paper tickets are no longer sold, buses don't take cash, and a bus ticket isn't valid on the metro. Free with no booking: Galeries Lafayette, the Christmas markets, the Champs-Élysées, the outside of the Arc, the Tuileries, the Louvre courtyard and the Eiffel Tower sparkle.</p></div>`}
+
+const TODO=['Add an arrival time of about 16:00 in the Booking.com app','Message the hotel to hold bags on Thursday before check-in and on Saturday after check-out','Book a free Notre-Dame slot for Fri around 11:15 (notredamedeparis.fr or the app)','Recheck the forecast on Wednesday','In the Bonjour RATP app, load 3 Bus-Tram tickets and 1 Metro-Train-RER ticket on each adult\'s phone','Pack a footmuff, rain cover (windbreak), hats, mittens and hand warmers'];
+function extras(){let done={};try{done=JSON.parse(localStorage.getItem('paris-todo')||'{}')}catch(e){}
+ return`<div class="card"><h3>Trip details</h3><table><tr><td>Out</td><td>Thu 26 · 09:31 St Pancras → 12:51 Gare du Nord · coach 7, seats 43–44</td></tr><tr><td>Back</td><td>Sat 28 · 19:03 Gare du Nord → 20:30 St Pancras · coach 11, seats 51–52</td></tr><tr><td>Hotel</td><td>29 Rue Saint-Lazare, 75009 · check-in 15:00–20:00 · check-out 11:00</td></tr></table></div>
+ <div class="card check"><h3>Before you go</h3>${TODO.map((t,i)=>`<label class="${done[i]?'done':''}"><input type="checkbox" data-k="${i}" ${done[i]?'checked':''}><span>${t}</span></label>`).join('')}</div>`}
+function bindChecks(){list.querySelectorAll('.check input').forEach(c=>c.addEventListener('change',()=>{let d={};try{d=JSON.parse(localStorage.getItem('paris-todo')||'{}')}catch(e){}d[c.dataset.k]=c.checked;c.parentElement.classList.toggle('done',c.checked);try{localStorage.setItem('paris-todo',JSON.stringify(d))}catch(e){}}))}
+
+function nowBanner(){const n=parisNow(),el=$('#now');if(!el)return;el.classList.remove('on');if(!n||DATES[n.d]!==day.id)return;
+ const s=day.steps;let cur=-1;s.forEach((p,i)=>{if(mins(p.t)<=n.m)cur=i});
+ const nx=s[cur+1];el.textContent=cur<0?`Today starts at ${s[0].t}: ${s[0].name}`:`Now: ${s[cur].name}`+(nx?` · next at ${nx.t}: ${nx.name}`:'');el.classList.add('on')}
+
+function select(i,scroll){sel=sel===i&&!scroll?-1:i;list.querySelectorAll('.step').forEach(e=>e.classList.toggle('sel',+e.dataset.i===sel));
+ if(sel>=0){const p=day.steps[sel],[x,y]=P(p.lat,p.lng);if(x<view.x||x>view.x+view.w||y<view.y||y>view.y+view.h){view.x=x-view.w/2;view.y=y-view.h/2}}
+ drawMap();
+ if(scroll&&sel>=0){const el=$('#s'+sel);const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;el&&el.scrollIntoView({behavior:rm?'auto':'smooth',block:'center'})}}
+
+function setDay(id){day=DAYS.find(d=>d.id===id)||DAYS[0];sel=-1;
+ tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-selected',b.dataset.id===day.id));render();fit();drawMap();
+ if(location.hash.slice(1)!==day.id)history.replaceState(null,'','#'+day.id)}
+
+tabs.innerHTML=DAYS.map(d=>`<button role="tab" data-id="${d.id}" aria-selected="false">${d.tab}<small>${d.sub}</small></button>`).join('');
+tabs.addEventListener('click',e=>{const b=e.target.closest('button');if(b)setDay(b.dataset.id)});
+list.addEventListener('click',e=>{if(e.target.closest('a,input,label'))return;const s=e.target.closest('.step');if(s)select(+s.dataset.i,false)});
+addEventListener('hashchange',()=>{if(location.hash.slice(1)!==day.id)setDay(location.hash.slice(1))});
+const n0=parisNow();setDay(location.hash.slice(1)||(n0&&DATES[n0.d])||'thu');
+setInterval(nowBanner,60000);
+// install hint + offline support (only when hosted as a real site)
+try{const standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;let seen=false;try{seen=localStorage.getItem('tip-install')==='1'}catch(e){}
+ const ios=/iphone|ipad|ipod/i.test(navigator.userAgent),inFrame=window.top!==window.self,el=$('#install');
+ let deferred=null;addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e;if(!seen&&!inFrame){$('#installText').textContent='Install Turners in Paris as an app. It works offline too.';$('#installBtn').textContent='Install';el.classList.add('on')}});
+ if(ios&&!standalone&&!seen&&!inFrame)el.classList.add('on');
+ $('#installBtn').onclick=async()=>{if(deferred){deferred.prompt();deferred=null}el.classList.remove('on');try{localStorage.setItem('tip-install','1')}catch(e){}};
+ if('serviceWorker' in navigator&&!inFrame&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
+}catch(e){}
+}
+</script>
+</body>
+</html>

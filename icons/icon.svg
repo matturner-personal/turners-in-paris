@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <clipPath id="c"><rect width="1024" height="1024"/></clipPath>
+    <radialGradient id="glow" cx="512" cy="300" r="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff6cf" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#fff6cf" stop-opacity="0"/>
+    </radialGradient>
+    <symbol id="spark" viewBox="-10 -10 20 20"><path d="M0-10 2.2-2.2 10 0 2.2 2.2 0 10-2.2 2.2-10 0-2.2-2.2Z" fill="#f4b73e"/></symbol>
+  </defs>
+  <g clip-path="url(#c)">
+    <!-- tricolore -->
+    <rect x="0" y="0" width="342" height="1024" fill="#2b4fa6"/>
+    <rect x="341" y="0" width="342" height="1024" fill="#f7f2e8"/>
+    <rect x="682" y="0" width="342" height="1024" fill="#e0454b"/>
+    <rect x="341" y="0" width="342" height="700" fill="url(#glow)"/>
+    <!-- Eiffel Tower -->
+    <g fill="#1d2b4c">
+      <rect x="505" y="58" width="14" height="60" rx="5"/>
+      <path d="M498 112 H526 L548 318 H476 Z"/>
+      <rect x="458" y="314" width="108" height="20" rx="5"/>
+      <path d="M474 334 H550 L598 468 H426 Z"/>
+      <rect x="406" y="462" width="212" height="24" rx="6"/>
+      <path d="M418 486 H606 L676 690 H588 Q512 556 436 690 H348 Z"/>
+    </g>
+    <use href="#spark" x="438" y="150" width="34" height="34"/>
+    <use href="#spark" x="560" y="210" width="26" height="26"/>
+    <use href="#spark" x="566" y="96" width="22" height="22"/>
+    <use href="#spark" x="420" y="262" width="22" height="22"/>
+
+    <!-- Mum (left) -->
+    <rect x="222" y="690" width="56" height="60" fill="#e9bfa0"/>
+    <path d="M90 1030 C90 830 160 740 250 740 C340 740 410 830 410 1030 Z" fill="#b8bec7"/>
+    <path d="M200 752 Q250 780 300 752" fill="none" stroke="#9aa1ab" stroke-width="10" stroke-linecap="round"/>
+    <path d="M112 600 C104 470 170 440 250 440 C330 440 396 470 388 600 C386 690 404 740 360 770 C340 740 330 720 330 690 L170 690 C170 720 160 740 140 770 C96 740 114 690 112 600 Z" fill="#8c6a49"/>
+    <circle cx="250" cy="596" r="122" fill="#f5d2b6"/>
+    <path d="M128 590 C130 500 180 466 250 466 C320 466 372 500 372 590 C350 540 300 516 262 512 C250 540 210 556 150 560 Z" fill="#8c6a49"/>
+    <g fill="none" stroke="#2a2522" stroke-width="9">
+      <circle cx="208" cy="606" r="34"/><circle cx="292" cy="606" r="34"/>
+      <path d="M242 604 Q250 596 258 604"/>
+    </g>
+    <circle cx="208" cy="608" r="11" fill="#2a2522"/><circle cx="292" cy="608" r="11" fill="#2a2522"/>
+    <circle cx="178" cy="660" r="16" fill="#f0a39a" opacity=".55"/><circle cx="322" cy="660" r="16" fill="#f0a39a" opacity=".55"/>
+    <path d="M214 664 Q250 694 286 664" fill="none" stroke="#a5453f" stroke-width="10" stroke-linecap="round"/>
+
+    <!-- Dad (right) -->
+    <rect x="745" y="660" width="60" height="50" fill="#e9bfa0"/>
+    <path d="M610 1030 C610 810 680 700 775 700 C870 700 940 810 940 1030 Z" fill="#1f2329"/>
+    <path d="M730 704 Q775 738 820 704" fill="none" stroke="#33383f" stroke-width="10" stroke-linecap="round"/>
+    <circle cx="775" cy="560" r="130" fill="#f5d2b6"/>
+    <path d="M648 546 C640 452 700 412 778 412 C856 412 914 446 906 540 C890 500 860 486 830 484 C800 500 740 506 690 498 C672 510 660 526 648 546 Z" fill="#6b4a2e"/>
+    <circle cx="733" cy="574" r="12" fill="#2a2522"/><circle cx="817" cy="574" r="12" fill="#2a2522"/>
+    <path d="M712 540 Q733 530 752 538 M798 538 Q817 530 838 540" fill="none" stroke="#6b4a2e" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="704" cy="624" r="17" fill="#f0a39a" opacity=".5"/><circle cx="846" cy="624" r="17" fill="#f0a39a" opacity=".5"/>
+    <path d="M735 626 Q775 660 815 626" fill="none" stroke="#a5453f" stroke-width="10" stroke-linecap="round"/>
+
+    <!-- Toddler (centre front) -->
+    <path d="M380 1030 C380 900 440 860 512 860 C584 860 644 900 644 1030 Z" fill="#7fa7cf"/>
+    <path d="M478 868 Q512 890 546 868" fill="none" stroke="#6890bb" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="512" cy="760" r="106" fill="#f7d8be"/>
+    <path d="M410 742 C404 676 452 646 512 646 C574 646 620 678 614 740 C600 712 580 700 560 696 C552 712 540 718 528 716 C520 704 508 700 494 702 C476 716 452 720 430 718 C420 724 414 732 410 742 Z" fill="#e9c46a"/>
+    <path d="M500 650 C496 628 510 616 524 620 C516 628 514 640 520 652" fill="#e9c46a"/>
+    <circle cx="478" cy="770" r="11" fill="#2a2522"/><circle cx="546" cy="770" r="11" fill="#2a2522"/>
+    <circle cx="452" cy="806" r="15" fill="#f0a39a" opacity=".55"/><circle cx="572" cy="806" r="15" fill="#f0a39a" opacity=".55"/>
+    <path d="M486 810 Q512 838 538 810" fill="none" stroke="#a5453f" stroke-width="9" stroke-linecap="round"/>
+  </g>
+</svg>
